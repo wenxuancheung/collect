@@ -1,0 +1,44 @@
+<view class="container" style="background-color: {{ info.theme_color }} ;">
+	<view class="banner">
+		<image src="{{ info.banner }}" mode='widthFix'  wx:if="{{ !info.banner == '' }}"/>
+	</view>
+		<form bindsubmit="submitButon" report-submit>
+			<view class="content">
+				<block wx:for="{{ list }}" wx:key="*this">
+					<view class="item">
+						<label>{{ item.name }}</label>
+						<block wx:if="{{ item.type == 1 }}">
+							<input type="text" name="{{ item.id }}" data-index="{{index}}"
+							placeholder="请填写" bindchange="bindCheckChange"/>
+						</block>
+						<block wx:if="{{ item.type == 2 }}">
+							<picker mode="selector" bindchange="bindPickerChange"
+							data-index="{{index}}" range="{{item.param}}">
+					            <view class="selected-value">
+					            	{{ item.value || '请选择' }}
+					            </view>
+								<input class="hidden" name="{{item.id}}" value="{{ item.value }}" />
+						    </picker>
+						</block>
+						<block wx:if="{{ item.type == 3 }}">
+							<checkbox-group bindchange="bindCheckChange" 
+							data-index="{{index}}" class="checkboxGroup">
+								<view class="checkbox" wx:for="{{item.param}}"  
+								wx:for-item="_item" wx:for-index="_index" wx:key="{{index}}{{_index}}">
+									<checkbox value="{{_item}}"/>
+									<label>{{_item}}</label>
+								</view>
+							</checkbox-group>
+							<block wx:for="{{ item.value }}" wx:key="*this"
+							wx:for-item="v_item" wx:for-index="v_index">
+								<input class="hidden" name="{{item.id}}[{{v_index}}]" value="{{v_item}}" />
+							</block>				
+			      </block>
+					</view>
+				</block>
+			</view>
+			<button class="button" formType="submit">
+				提交
+			</button>
+		</form>
+</view>
